@@ -62,7 +62,7 @@
 					placeholder="e.g. C:\UC"
           bind:value={path}
 				/>
-				<p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
+				<p class="text-gray-600 text-xs italic">Location of the folder where the project data will be generated.</p>
 			</div>
 		</div>
 		<button
@@ -72,6 +72,6 @@
 		>
 			Create
 		</button>
-    <p class="mx-6">{message}</p>
+    <p class="mx-6 mt-3 text-gray-600 text-xs">{message}</p>
 	</form>
 </div>
