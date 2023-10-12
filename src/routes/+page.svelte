@@ -1,13 +1,22 @@
 <script>
 	import { invoke } from '@tauri-apps/api/tauri';
 
-	let serial = '20000';
+	let serial = `${new Date().getFullYear() - 2000}000`;
 	let name = '';
 	let path = 'C:\\UC';
 	let message = 'N/A';
+	let isError = false;
 
 	const create = async () => {
-		message = await invoke('create_project', { serial, name, path });
+		await invoke('create_project', { serial, name, path })
+			.then((msg) => {
+				isError = false;
+				message = msg;
+			})
+			.catch((err) => {
+				isError = true;
+				message = err;
+			});
 	};
 </script>
 
@@ -24,9 +33,7 @@
 				<input
 					class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
 					id="grid-project-serial"
-					type="number"
-					min="20000"
-					max="99999"
+					type="text"
 					placeholder="20000"
 					bind:value={serial}
 				/>
@@ -74,6 +81,6 @@
 		>
 			Create
 		</button>
-		<p class="mx-6 mt-3 text-gray-600 text-xs">{message}</p>
+		<p class="mx-6 mt-3 text-gray-600 text-xs {isError ? "text-red-600" : "text-gray-600"}">{message}</p>
 	</form>
 </div>
