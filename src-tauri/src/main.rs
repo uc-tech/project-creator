@@ -2,26 +2,32 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs::{self, File};
+use regex::Regex;
 
 #[tauri::command]
 fn create_project(serial: &str, name: &str, path: &str, gitignore: &str, gitattributes: &str) -> Result<String, String> {
     if serial.len() == 0 || name.len() == 0 || path.len() == 0 {
         return Err("Serial, name and path cannot be empty!".into());
     }
-
-    let project_name = name
-        .chars()
-        .filter(|c| !c.is_whitespace())
-        .collect::<String>();
+    
+    let project_name: String;
+    match Regex::new(r"[^a-zA-Z0-9_]") {
+        Ok(re) => {
+            project_name = re.replace_all(&name, "").to_string();
+        }
+        Err(e) => {
+            return Err(format!("Fail to parse project name: {}", e));
+        }
+    }
     let root_path = format!("{}\\{}-{}", path, serial, project_name);
 
     if let Err(e) = fs::create_dir_all(&root_path) {
-        return Err(format!("Create project path: {}", e));
+        return Err(format!("Fail to create project path: {}", e));
     }
 
     let unity_path = format!("{}\\Source-Unity-{}-{}", root_path, serial, project_name);
     if let Err(e) = fs::create_dir(&unity_path) {
-        return Err(format!("Create unity source path: {}", e));
+        return Err(format!("Fail to create unity source path: {}", e));
     }
 
     let project_path = format!("{}\\Project", unity_path);
