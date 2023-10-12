@@ -4,7 +4,7 @@
 use std::fs::{self, File};
 
 #[tauri::command]
-fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String> {
+fn create_project(serial: &str, name: &str, path: &str, gitignore: &str, gitattributes: &str) -> Result<String, String> {
     if serial.len() == 0 || name.len() == 0 || path.len() == 0 {
         return Err("Serial, name and path cannot be empty!".into());
     }
@@ -25,17 +25,17 @@ fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String
     }
 
     let project_path = format!("{}\\Project", unity_path);
-    if let Err(err) = fs::create_dir(&project_path) {
-        return Err(err.to_string());
+    if let Err(e) = fs::create_dir(&project_path) {
+        return Err(format!("Failed to create dir: {}", e));
     }
     let project_keep_path = format!("{}\\.keep", project_path);
-    if let Err(err) = File::create(&project_keep_path) {
-        return Err(err.to_string());
+    if let Err(e) = File::create(&project_keep_path) {
+        return Err(format!("Failed to create file: {}", e));
     }
 
     let package_path = format!("{}\\Package", unity_path);
-    if let Err(err) = fs::create_dir(&package_path) {
-        return Err(err.to_string());
+    if let Err(e) = fs::create_dir(&package_path) {
+        return Err(format!("Failed to create dir: {}", e));
     }
     /* 
     let package_keep_path = format!("{}\\.keep", package_path);
@@ -45,13 +45,10 @@ fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String
     */
 
     let proj_pkg_path = format!("{}\\UltraCombos.{}", package_path, project_name);
-    if let Err(err) = fs::create_dir(&proj_pkg_path) {
-        return Err(err.to_string());
+    if let Err(e) = fs::create_dir(&proj_pkg_path) {
+        return Err(format!("Failed to create dir: {}", e));
     }
     let proj_pkg_json = format!("{}\\package.json", proj_pkg_path);
-    if let Err(err) = File::create(&proj_pkg_json) {
-        return Err(err.to_string());
-    }
     let package_name = format!("com.ultracombos.{}", project_name.to_lowercase());
     let json = format!(
         r#"{{
@@ -67,18 +64,15 @@ fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String
     }}
 }}"#
     );
-    if let Err(err) = fs::write(&proj_pkg_json, json) {
-        return Err(err.to_string());
+    if let Err(e) = fs::write(&proj_pkg_json, json) {
+        return Err(format!("Failed to write file: {}", e));
     }
 
     let proj_pkg_runtime_path = format!("{}\\Runtime", proj_pkg_path);
-    if let Err(err) = fs::create_dir(&proj_pkg_runtime_path) {
-        return Err(err.to_string());
+    if let Err(e) = fs::create_dir(&proj_pkg_runtime_path) {
+        return Err(format!("Failed to create dir: {}", e));
     }
     let proj_pkg_runtime_file = format!("{}\\UltraCombos.{}.Runtime.asmdef", proj_pkg_runtime_path, project_name);
-    if let Err(err) = File::create(&proj_pkg_runtime_file) {
-        return Err(err.to_string());
-    }
     let content = format!(
         r#"{{
     "name": "UltraCombos.{project_name}.Runtime",
@@ -95,14 +89,11 @@ fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String
     "noEngineReferences": false
 }}"#
     );
-    if let Err(err) = fs::write(&proj_pkg_runtime_file, content) {
-        return Err(err.to_string());
+    if let Err(e) = fs::write(&proj_pkg_runtime_file, content) {
+        return Err(format!("Failed to write file: {}", e));
     }
 
     let proj_pkg_readme_file = format!("{}\\README.md", proj_pkg_path);
-    if let Err(err) = File::create(&proj_pkg_readme_file) {
-        return Err(err.to_string());
-    }
     let readme = format!(
         r#"## Unity Package for {name}
 
@@ -115,8 +106,18 @@ fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String
 ```
         "#
     );
-    if let Err(err) = fs::write(&proj_pkg_readme_file, readme) {
-        return Err(err.to_string());
+    if let Err(e) = fs::write(&proj_pkg_readme_file, readme) {
+        return Err(format!("Failed to write file: {}", e));
+    }
+
+    let proj_pkg_gitignore_file = format!("{}\\.gitignore", proj_pkg_path);
+    if let Err(e) = fs::write(&proj_pkg_gitignore_file, gitignore) {
+        return Err(format!("Failed to write file: {}", e));
+    }
+
+    let proj_pkg_gitattributes_file = format!("{}\\.gitattributes", proj_pkg_path);
+    if let Err(e) = fs::write(&proj_pkg_gitattributes_file, gitattributes) {
+        return Err(format!("Failed to write file: {}", e));
     }
 
     if let Err(e) = std::process::Command::new("git")
@@ -127,8 +128,8 @@ fn create_project(serial: &str, name: &str, path: &str) -> Result<String, String
         return Err(format!("Failed to init git: {}", e));
     }
 
-    if let Err(err) = fs::create_dir(format!("{}\\Deploy", root_path)) {
-        return Err(err.to_string());
+    if let Err(e) = fs::create_dir(format!("{}\\Deploy", root_path)) {
+        return Err(format!("Failed to create dir: {}", e));
     }
 
     if let Err(e) = std::process::Command::new("explorer")
