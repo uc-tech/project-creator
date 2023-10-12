@@ -3,7 +3,7 @@
 
 	let serial = '20000';
 	let name = '';
-  let path = 'C:\\UC';
+	let path = 'C:\\UC';
 	let message = 'N/A';
 
 	const create = async () => {
@@ -14,7 +14,7 @@
 <div class="container mx-auto mt-16">
 	<form class="w-full">
 		<div class="flex flex-wrap mx-3 mb-6">
-			<div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+			<div class="w-full sm:w-1/2 px-3 mb-6 sm:mb-0">
 				<label
 					class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
 					for="grid-project-serial"
@@ -31,7 +31,7 @@
 					bind:value={serial}
 				/>
 			</div>
-			<div class="w-full md:w-1/2 px-3">
+			<div class="w-full sm:w-1/2 px-3">
 				<label
 					class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
 					for="grid-project-name"
@@ -43,7 +43,7 @@
 					id="grid-project-name"
 					type="text"
 					placeholder="e.g. The Bold"
-          bind:value={name}
+					bind:value={name}
 				/>
 			</div>
 		</div>
@@ -60,18 +60,20 @@
 					id="grid-path"
 					type="text"
 					placeholder="e.g. C:\UC"
-          bind:value={path}
+					bind:value={path}
 				/>
-				<p class="text-gray-600 text-xs italic">Location of the folder where the project data will be generated.</p>
+				<p class="text-gray-600 text-xs italic">
+					Location of the folder where the project data will be generated.
+				</p>
 			</div>
 		</div>
 		<button
 			class="flex flex-wrap mx-6 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
 			type="button"
-      on:click="{create}"
+			on:click={create}
 		>
 			Create
 		</button>
-    <p class="mx-6 mt-3 text-gray-600 text-xs">{message}</p>
+		<p class="mx-6 mt-3 text-gray-600 text-xs">{message}</p>
 	</form>
 </div>
