@@ -28,7 +28,7 @@
 			);
 			const json = await response.json();
 			return atob(json.content);
-		} catch (error) {
+		} catch (e) {
 			return '';
 		}
 	};
@@ -40,7 +40,7 @@
 			);
 			const json = await response.json();
 			return atob(json.content);
-		} catch (error) {
+		} catch (e) {
 			return '';
 		}
 	};
