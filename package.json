@@ -11,7 +11,7 @@
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
-  "type": "module",
+	"type": "module",
 	"dependencies": {
 		"@tauri-apps/api": "^1.5.0"
 	},

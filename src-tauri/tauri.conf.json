@@ -7,8 +7,8 @@
     "distDir": "../build"
   },
   "package": {
-    "productName": "project-creator",
-    "version": "0.1.3"
+    "productName": "Project Creator",
+    "version": "0.1.4"
   },
   "tauri": {
     "allowlist": {

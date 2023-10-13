@@ -47,6 +47,9 @@
 </script>
 
 <div class="fixed w-full h-full dark:bg-slate-800">
+	<div class="absolute bottom-0 right-0 p-6 text-gray-400">
+		v0.1.4
+	</div>
 	<div class="container mx-auto mt-16">
 		<form class="w-full">
 			<div class="flex flex-wrap mx-3 mb-6">
