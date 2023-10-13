@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "project-creator",
-    "version": "0.1.1"
+    "version": "0.1.2"
   },
   "tauri": {
     "allowlist": {
@@ -53,7 +53,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://releases.myapp.com/{{target}}/{{arch}}/{{current_version}}"
+        "https://github.com/uc-tech/project-creator/releases/latest/download/latest.json"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEU4QUUwODk5NDU2RjUwQUEKUldTcVVHOUZtUWl1Nk5sOE5Gbk1sdUloa2dEODRCczM0ZTlqRG5XVzRZc2VWc3AzaW9NL0piSlEK",
