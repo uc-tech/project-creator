@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "project-creator",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "tauri": {
     "allowlist": {
@@ -51,7 +51,7 @@
       "csp": null
     },
     "updater": {
-      "active": false,
+      "active": true,
       "endpoints": [
         "https://releases.myapp.com/{{target}}/{{arch}}/{{current_version}}"
       ],
